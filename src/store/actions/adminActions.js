@@ -10,9 +10,11 @@ const fetchFailure = error => {
 };
 
 export const fetchAllCocktails = () => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
         try {
-            await axios.get("/moderation/cocktails").then(response => {
+            const token = getState().users.user.token;
+            const headers = {'Authorization': token};
+            await axios.get("/moderation/cocktails", {headers}).then(response => {
                 dispatch(fetchAllCocktailsSuccess(response.data));
             })}catch(e) {
             if (e.response && e.response.data) {
